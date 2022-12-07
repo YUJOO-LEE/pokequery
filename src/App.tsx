@@ -1,10 +1,13 @@
-import { FormEvent, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { SEARCH_STATE } from './assets/searchState';
 import axios from 'axios';
 import Loading from "./components/loading";
 import Failure from "./components/failure";
 import Pokemon from "./components/pokemon";
-import Empty from "./components/empty";
+import Init from "./components/init";
+import SearchForm from "./components/searchForm";
+import Layout from "./components/layout";
+import Card from "./components/card";
 
 function App() {
   const [SearchQuery, setSearchQuery] = useState<string>('');
@@ -38,26 +41,21 @@ function App() {
     fetchData();
   }, [SearchQuery]);
 
-  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchQuery(e.currentTarget.query.value);
   }
 
   return (
-    <div>
-      <h1>Pokemon Query</h1>
-      <form onSubmit={handleSearch}>
-        <label htmlFor="query">ID</label>
-        <input type="text" name="query" id="query" />
-        <button type="submit">search pokemon</button>
-      </form>
-      <div>
+    <Layout setSearchQuery={setSearchQuery}>
+      <SearchForm handleSearch={handleSearch} />
+      <Card state={SearchState}>
         {SearchState === SEARCH_STATE.LOADING && <Loading />}
         {SearchState === SEARCH_STATE.FAILURE && <Failure />}
         {SearchState === SEARCH_STATE.SUCCESS && <Pokemon data={SearchResult} />}
-        {SearchState === SEARCH_STATE.EMPTY && <Empty />}
-      </div>
-    </div>
+        {SearchState === SEARCH_STATE.EMPTY && <Init />}
+      </Card>
+    </Layout>
   )
 }
 

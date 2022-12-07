@@ -17,14 +17,14 @@ const CardInner = styled.div`
   }
 `;
 
-function Loading() {
+function Init() {
   return (
     <CardInner>
       <p>
-        loading...
+        Search Your Pokemon!
       </p>
     </CardInner>
   )
 }
 
-export default Loading;
+export default Init;
