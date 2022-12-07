@@ -31,9 +31,9 @@ function Pokemon({ data }: { data: TypePokemon }) {
     <CardInner data={data}>
       <p className='no'>No.{data.id}</p>
       <h2>{data.name}</h2>
-      <p className='types'>
+      <div className='types'>
         {data.types.map(item=><p key={`slot${item.slot}`}>{item.type.name}</p>)}
-      </p>
+      </div>
       <p className='body'>
         {data.weight / 10}kg / {data.height / 10}m
       </p>
