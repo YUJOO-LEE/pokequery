@@ -1,4 +1,7 @@
 export interface TypePokemon {
+  weight: number;
+  height: number;
+  types: Array<{ type: { name: string }}>;
   name: string;
   image: string;
 }
