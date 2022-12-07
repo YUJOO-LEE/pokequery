@@ -1,29 +1,41 @@
 import { FormEvent, useEffect, useState } from "react";
+import { SEARCH_STATE } from './assets/searchState';
 import axios from 'axios';
+import Loading from "./components/loading";
+import Failure from "./components/failure";
+import Pokemon from "./components/pokemon";
+import Empty from "./components/empty";
 
 function App() {
   const [SearchQuery, setSearchQuery] = useState<string>('');
   const [SearchResult, setSearchResult] = useState<any | null>(null);
-  const [Loading, setLoading] = useState<string>('');
+  const [SearchState, setSearchState] = useState<string>(SEARCH_STATE.INIT);
 
   useEffect(()=>{
-    if (!SearchQuery) return;
+    // empty input 처리
+    if (!SearchQuery) {
+      setSearchState(SEARCH_STATE.EMPTY);
+      return;
+    };
+
+    // 데이터 호출
     const fetchData = async () => {
       try {
-        setLoading('loading');
+        setSearchState(SEARCH_STATE.LOADING);
         const API_URL = `https://pokeapi.co/api/v2/pokemon/${SearchQuery}`;
         const result = await axios.get(API_URL);
+        result.data.image = result.data['sprites']['other']['official-artwork']['front_default'];
         setSearchResult(result.data);
-        setLoading('success');
+        setSearchState(SEARCH_STATE.SUCCESS);
+
+        console.log(result.data);
       }
       catch (e) {
         console.error(e);
-        setLoading('failure');
+        setSearchState(SEARCH_STATE.FAILURE);
       }
     }
     fetchData();
-
-    console.log(SearchResult);
   }, [SearchQuery]);
 
   const handleSearch = (e: FormEvent<HTMLFormElement>) => {
@@ -40,13 +52,10 @@ function App() {
         <button type="submit">search pokemon</button>
       </form>
       <div>
-        {Loading === 'loading' && <p>Loading...</p>}
-        {Loading === 'failure' && <p>failure!</p>}
-        {Loading === 'success' && SearchResult && 
-          <div>
-            <img src={SearchResult['sprites']['other']['official-artwork']['front_default']} alt={SearchResult['name']} />
-          </div>
-        }
+        {SearchState === SEARCH_STATE.LOADING && <Loading />}
+        {SearchState === SEARCH_STATE.FAILURE && <Failure />}
+        {SearchState === SEARCH_STATE.SUCCESS && <Pokemon data={SearchResult} />}
+        {SearchState === SEARCH_STATE.EMPTY && <Empty />}
       </div>
     </div>
   )
