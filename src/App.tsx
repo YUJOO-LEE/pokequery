@@ -41,15 +41,9 @@ function App() {
     fetchData();
   }, [SearchQuery]);
 
-  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-    setSearchQuery(e.currentTarget.query.value);
-    e.currentTarget.query.value = '';
-  }
-
   return (
     <Layout>
-      <SearchForm handleSearch={handleSearch} />
+      <SearchForm setSearchQuery={setSearchQuery} />
       <Card state={SearchState}>
         {SearchState === SEARCH_STATE.LOADING && <Loading />}
         {SearchState === SEARCH_STATE.FAILURE && <Failure />}

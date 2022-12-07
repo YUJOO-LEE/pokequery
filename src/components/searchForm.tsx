@@ -64,9 +64,16 @@ const SearchButton = styled.button`
   cursor: pointer;
 `;
 
-function SearchForm({ handleSearch }: {handleSearch: (e: React.FormEvent<HTMLFormElement>) => void}) {
+function SearchForm({ setSearchQuery }: { setSearchQuery: React.Dispatch<React.SetStateAction<string>> }) {
   const [InputValue, setInputValuse] = useState('');
   
+  // 검색 submit 이벤트
+  const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchQuery(e.currentTarget.query.value.toLowerCase());
+    e.currentTarget.query.value = '';
+  }
+
   return (
     <FormWrap>
       <form onSubmit={handleSearch}>
