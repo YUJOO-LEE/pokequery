@@ -1,32 +1,53 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import './App.css'
+import { FormEvent, useEffect, useState } from "react";
+import axios from 'axios';
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [SearchQuery, setSearchQuery] = useState<string>('');
+  const [SearchResult, setSearchResult] = useState<any | null>(null);
+  const [Loading, setLoading] = useState<string>('');
+
+  useEffect(()=>{
+    if (!SearchQuery) return;
+    const fetchData = async () => {
+      try {
+        setLoading('loading');
+        const API_URL = `https://pokeapi.co/api/v2/pokemon/${SearchQuery}`;
+        const result = await axios.get(API_URL);
+        setSearchResult(result.data);
+        setLoading('success');
+      }
+      catch (e) {
+        console.error(e);
+        setLoading('failure');
+      }
+    }
+    fetchData();
+
+    console.log(SearchResult);
+  }, [SearchQuery]);
+
+  const handleSearch = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setSearchQuery(e.currentTarget.query.value);
+  }
 
   return (
-    <div className="App">
+    <div>
+      <h1>Pokemon Query</h1>
+      <form onSubmit={handleSearch}>
+        <label htmlFor="query">ID</label>
+        <input type="text" name="query" id="query" />
+        <button type="submit">search pokemon</button>
+      </form>
       <div>
-        <a href="https://vitejs.dev" target="_blank">
-          <img src="/vite.svg" className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://reactjs.org" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
+        {Loading === 'loading' && <p>Loading...</p>}
+        {Loading === 'failure' && <p>failure!</p>}
+        {Loading === 'success' && SearchResult && 
+          <div>
+            <img src={SearchResult['sprites']['other']['official-artwork']['front_default']} alt={SearchResult['name']} />
+          </div>
+        }
       </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.tsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
     </div>
   )
 }
