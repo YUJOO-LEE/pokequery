@@ -8,10 +8,11 @@ import Init from "./components/init";
 import SearchForm from "./components/searchForm";
 import Layout from "./components/layout";
 import Card from "./components/card";
+import { TypePokemon } from "./assets/types";
 
 function App() {
   const [SearchQuery, setSearchQuery] = useState<string>('');
-  const [SearchResult, setSearchResult] = useState<any | null>(null);
+  const [SearchResult, setSearchResult] = useState<TypePokemon | null>(null);
   const [SearchState, setSearchState] = useState<string>(SEARCH_STATE.EMPTY);
 
   useEffect(()=>{
@@ -30,8 +31,6 @@ function App() {
         result.data.image = result.data['sprites']['other']['official-artwork']['front_default'];
         setSearchResult(result.data);
         setSearchState(SEARCH_STATE.SUCCESS);
-
-        console.log(result.data);
       }
       catch (e) {
         console.error(e);
@@ -47,7 +46,8 @@ function App() {
       <Card state={SearchState}>
         {SearchState === SEARCH_STATE.LOADING && <Loading />}
         {SearchState === SEARCH_STATE.FAILURE && <Failure />}
-        {SearchState === SEARCH_STATE.SUCCESS && <Pokemon data={SearchResult} />}
+        {SearchState === SEARCH_STATE.SUCCESS && SearchResult && 
+          <Pokemon data={SearchResult} />}
         {SearchState === SEARCH_STATE.EMPTY && <Init />}
       </Card>
     </Layout>

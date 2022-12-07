@@ -26,7 +26,7 @@ const CardInner = styled.div`
   }
 `;
 
-function Pokemon({ data }: { data: TypePokemon}) {
+function Pokemon({ data }: { data: TypePokemon }) {
   return (
     <CardInner data={data}>
       <p className='no'>No.{data.id}</p>
