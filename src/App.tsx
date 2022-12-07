@@ -12,7 +12,7 @@ import Card from "./components/card";
 function App() {
   const [SearchQuery, setSearchQuery] = useState<string>('');
   const [SearchResult, setSearchResult] = useState<any | null>(null);
-  const [SearchState, setSearchState] = useState<string>(SEARCH_STATE.INIT);
+  const [SearchState, setSearchState] = useState<string>(SEARCH_STATE.EMPTY);
 
   useEffect(()=>{
     // empty input 처리
@@ -44,10 +44,11 @@ function App() {
   const handleSearch = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setSearchQuery(e.currentTarget.query.value);
+    e.currentTarget.query.value = '';
   }
 
   return (
-    <Layout setSearchQuery={setSearchQuery}>
+    <Layout>
       <SearchForm handleSearch={handleSearch} />
       <Card state={SearchState}>
         {SearchState === SEARCH_STATE.LOADING && <Loading />}

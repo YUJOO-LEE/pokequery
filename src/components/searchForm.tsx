@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import styled from 'styled-components';
 
 const FormWrap = styled.div`
@@ -64,15 +65,15 @@ const SearchButton = styled.button`
 `;
 
 function SearchForm({ handleSearch }: {handleSearch: (e: React.FormEvent<HTMLFormElement>) => void}) {
+  const [InputValue, setInputValuse] = useState('');
+  
   return (
     <FormWrap>
       <form onSubmit={handleSearch}>
-        <SearchInput type="text" name="query" id="query" 
-          onInput={(e) => {
-            e.currentTarget.value 
-            ? e.currentTarget.classList.add('on')
-            : e.currentTarget.classList.remove('on')
-          }}
+        <SearchInput type="search" name="query" id="query" 
+          onInput={(e)=>setInputValuse(e.currentTarget.value)}
+          value={InputValue}
+          className={InputValue ? 'on' : undefined}
         />
         <SearchLabel htmlFor="query">Pokemon ID</SearchLabel>
         <SearchButton type="submit">search</SearchButton>

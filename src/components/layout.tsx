@@ -17,7 +17,6 @@ const Title = styled.h1`
   text-shadow: 0 -10px 30px rgba(0,0,0,0.3);
   letter-spacing: -2px;
   color: #3762a9;
-  cursor: pointer;
 
   &::after{
     content: 'PokeQuery';
@@ -33,10 +32,10 @@ const Title = styled.h1`
   }
 `;
 
-function Layout({ setSearchQuery, children }: {setSearchQuery: React.Dispatch<React.SetStateAction<string>>, children: React.ReactNode}) {
+function Layout({ children }: { children: React.ReactNode }) {
   return (
     <Main>
-      <Title onClick={()=>setSearchQuery('')}>PokeQuery</Title>
+      <Title>PokeQuery</Title>
       {children}
     </Main>
   )

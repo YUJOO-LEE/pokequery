@@ -1,15 +1,20 @@
+interface TypePokemonTypes {
+  slot: number;
+  type: { name: string };
+}
+
 export interface TypePokemon {
-  weight: number;
-  height: number;
-  types: Array<{ type: { name: string }}>;
+  id: number;
   name: string;
   image: string;
+  types: Array<TypePokemonTypes>;
+  weight: number;
+  height: number;
 }
 
 export interface TypeSearchState {
-  INIT: string,
-  LOADING: string,
-  SUCCESS: string,
-  FAILURE: string,
-  EMPTY: string,
+  LOADING: string;
+  SUCCESS: string;
+  FAILURE: string;
+  EMPTY: string;
 }

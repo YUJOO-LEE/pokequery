@@ -16,11 +16,12 @@ const CardInner = styled.div`
   h2{
     font-size: 30px;
     font-weight: 700;
+    text-transform: uppercase;
     color: #000;
-    //color: #3762a9;
   }
 
   .types{
+    color: #3762a9;
     flex: 1;
   }
 `;
@@ -28,13 +29,14 @@ const CardInner = styled.div`
 function Pokemon({ data }: { data: TypePokemon}) {
   return (
     <CardInner data={data}>
+      <p className='no'>No.{data.id}</p>
       <h2>{data.name}</h2>
-      <div className='types'>
-        {data.types.map(item=><p>{item.type.name}</p>)}
-      </div>
-      <div className='body'>
+      <p className='types'>
+        {data.types.map(item=><p key={`slot${item.slot}`}>{item.type.name}</p>)}
+      </p>
+      <p className='body'>
         {data.weight / 10}kg / {data.height / 10}m
-      </div>
+      </p>
     </CardInner>
   )
 }
